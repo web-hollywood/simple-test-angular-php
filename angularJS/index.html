@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+		<script src="https://code.jquery.com/jquery-2.2.2.min.js" ></script>
+		<script type="text/javascript" src="fonoapi.jquery.min.js"></script>
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="custom.css">
+		<title>Gadgets Today</title>
+	</head>
+<body>
+
+<div ng-app="myApp" ng-controller="myController">
+	
+	<!-- bootstrap modal for get complete device info -->
+	  <div class="modal fade" id="deviceCompleteInfo" role="dialog">
+	    <div class="modal-dialog">
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	          <h4 class="modal-title">Device Info</h4>
+	        </div>
+	        <div class="modal-body" style="overflow: auto;">
+	          <div ng-repeat="(key, value) in completeDeviceInfo">
+	          	<div class="col-md-4">
+	          		<b>{{key}}</b>
+	          	</div>
+	          	<div class="col-md-8">
+	          		{{value}}
+	          	</div>
+	          </div>
+	        </div>
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        </div>
+	      </div>
+	      
+	    </div>
+	  </div>
+	<!-- ends here ~ bootstrap modal for get complete device info -->
+
+	<div class="container">
+		<div class="row" style="padding-top: 10px;">
+			<!-- browse all Products Again -->
+			<div class="col-md-8 browseAllProductsButton">
+				<button class="btn btn-primary" ng-disabled="showDevicesOnLoad" ng-click="showDevicesOnLoad = true; showDevicesOnSearch = false; showNoDataResult = false">Browse All Products</button>
+			</div>
+			<!-- ends here ~ browse all Products Again-->
+
+			<!-- search button -->
+			<div class="col-md-4">
+				<div class="col-md-8">
+					<div class="form-group">
+				    	<input class="devname form-control" type="text" placeholder="Search for your device"></input> 
+				  	</div>
+				</div>
+				<div class="col-md-4">
+				  	<div class="form-group">
+				    	<a class="form-control btn btn-primary submit" ng-click="searchDevices()">Submit</a>
+				  	</div>
+				</div>
+			</div>
+			<!-- ends here ~ search button -->
+
+		</div>
+		
+		<!-- search devices shows here -->
+		<div class="row">
+			<div class="api">
+			</div>
+		</div>
+		<!-- ends here ~  search devices shows here -->
+
+		<!-- show on load devices -->
+		<div class="completeDeviceInfoDiv" id="completeDeviceInfoSection" ng-show="showDevicesOnLoad">
+			<h4><u>Browse Mobile Devices:</u></h4>
+			<div class="deviceInfo" ng-repeat='device in allDevices track by $index' ng-click='getDeviceCompleteInfo($index)' data-toggle="modal" data-target="#deviceCompleteInfo">
+				<div class="col-md-4">
+					<img src="img/demoMobile.png" class="img-responsive" style="height: ">
+				</div>
+				<div class="col-md-8">
+					<div ng-show="device.Brand">
+						<div class="col-md-4">
+							<b>Brand Name</b>
+			 			</div>
+			 			<div class="col-md-8">
+			 				{{device.Brand}}
+			 			</div>
+			 		</div>
+					
+					<div ng-show="device.DeviceName">
+						<div class="col-md-4">
+							<b>Device Name</b>
+						</div> 
+						<div class="col-md-8">
+							{{device.DeviceName}}
+						</div>
+					</div>
+
+					<div ng-show="device.status">
+						<div class="col-md-4">
+							<b>Status</b>
+						</div> 
+						<div class="col-md-8">
+							{{device.status}}
+						</div>
+					</div>
+
+					<div ng-show="device.talk_time">
+						<div class="col-md-4">
+							<b>Talk Time</b>
+						</div>
+						<div class="col-md-8">
+							{{device.talk_time}}
+						</div>
+					</div>
+
+					<div ng-show="device.features_c">
+						<div class="col-md-4">
+							<b>Special Features</b>
+						</div>
+						<div class="col-md-8">
+							{{device.features_c}}
+						</div>
+					</div>
+
+					<div ng-show="device.sim">
+						<div class="col-md-4">
+							<b>Sim Type</b>
+						</div>
+						<div class="col-md-8">
+							{{device.sim}}
+						</div>
+					</div>
+
+					<div ng-show="device.battery_c">
+						<div class="col-md-4">
+							<b>Battery Info</b>
+						</div>
+						<div class="col-md-8">
+							{{device.battery_c}}
+						</div>
+					</div>
+
+					<div ng-show="device.battery_c">
+						<div class="col-md-4">
+							<b>Battery Info</b>
+						</div>
+						<div class="col-md-8">
+							{{device.battery_c}}
+						</div>
+					</div>
+
+					<div ng-show="device.colors">
+						<div class="col-md-4">
+							<b>Color Variant</b>
+						</div>
+						<div class="col-md-8">
+							{{device.colors}}
+						</div>
+					</div>
+					
+					<div ng-show="device.internal">
+						<div class="col-md-4">
+							<b>ROM</b>
+						</div>
+						<div class="col-md-8">
+							{{device.internal}}
+						</div>
+					</div>
+					
+					<div ng-show="device.stand_by">
+						<div class="col-md-4">
+							<b>Stand By</b>
+						</div>
+						<div class="col-md-8">
+							{{device.stand_by}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- ends here ~ show on load devices -->
+
+		<!-- show on search devices -->
+		<div class="completeDeviceInfoDiv" id="completeDeviceInfoSection" ng-show="showDevicesOnSearch">
+			<h4><u>Search Results:</u></h4>
+			<div class="deviceInfo" ng-repeat='searchDeviceInfo in searchDevice track by $index' ng-click='getSearchDeviceCompleteInfo($index)' data-toggle="modal" data-target="#deviceCompleteInfo">
+				<div class="col-md-4">
+					<img src="img/demoMobile.png" class="img-responsive" style="height: ">
+				</div>
+				<div class="col-md-8">
+					<div ng-show="searchDeviceInfo.Brand">
+						<div class="col-md-4">
+							<b>Brand Name</b>
+			 			</div>
+			 			<div class="col-md-8">
+			 				{{searchDeviceInfo.Brand}}
+			 			</div>
+			 		</div>
+					
+					<div ng-show="searchDeviceInfo.DeviceName">
+						<div class="col-md-4">
+							<b>Device Name</b>
+						</div> 
+						<div class="col-md-8">
+							{{searchDeviceInfo.DeviceName}}
+						</div>
+					</div>
+
+					<div ng-show="searchDeviceInfo.status">
+						<div class="col-md-4">
+							<b>Status</b>
+						</div> 
+						<div class="col-md-8">
+							{{searchDeviceInfo.status}}
+						</div>
+					</div>
+
+					<div ng-show="searchDeviceInfo.talk_time">
+						<div class="col-md-4">
+							<b>Talk Time</b>
+						</div>
+						<div class="col-md-8">
+							{{searchDeviceInfo.talk_time}}
+						</div>
+					</div>
+
+					<div ng-show="searchDeviceInfo.features_c">
+						<div class="col-md-4">
+							<b>Special Features</b>
+						</div>
+						<div class="col-md-8">
+							{{searchDeviceInfo.features_c}}
+						</div>
+					</div>
+
+					<div ng-show="searchDeviceInfo.sim">
+						<div class="col-md-4">
+							<b>Sim Type</b>
+						</div>
+						<div class="col-md-8">
+							{{searchDeviceInfo.sim}}
+						</div>
+					</div>
+
+					<div ng-show="searchDeviceInfo.battery_c">
+						<div class="col-md-4">
+							<b>Battery Info</b>
+						</div>
+						<div class="col-md-8">
+							{{searchDeviceInfo.battery_c}}
+						</div>
+					</div>
+
+					<div ng-show="searchDeviceInfo.battery_c">
+						<div class="col-md-4">
+							<b>Battery Info</b>
+						</div>
+						<div class="col-md-8">
+							{{searchDeviceInfo.battery_c}}
+						</div>
+					</div>
+
+					<div ng-show="searchDeviceInfo.colors">
+						<div class="col-md-4">
+							<b>Color Variant</b>
+						</div>
+						<div class="col-md-8">
+							{{searchDeviceInfo.colors}}
+						</div>
+					</div>
+					
+					<div ng-show="searchDeviceInfo.internal">
+						<div class="col-md-4">
+							<b>ROM</b>
+						</div>
+						<div class="col-md-8">
+							{{searchDeviceInfo.internal}}
+						</div>
+					</div>
+					
+					<div ng-show="searchDeviceInfo.stand_by">
+						<div class="col-md-4">
+							<b>Stand By</b>
+						</div>
+						<div class="col-md-8">
+							{{searchDeviceInfo.stand_by}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- ends here ~ show on search devices -->
+
+		<!-- show below div on no Result Found -->
+		<div class="showNoDataResultCss" ng-show="showNoDataResult">
+			<h3>No Data Found. Please Try Again with Different Search Query</h3>
+			<img src="img/no_results_found.png" class="img-responsive">
+		</div>
+		<!-- ends here ~ show below div on no Result Found -->
+
+	</div>
+	<!-- browse or get all devices on load -->
+	<p style="display: none;"" ng-init="getAllDevices()"></p>
+	<!-- ends here ~ browse or get all devices on load -->
+
+
+</div>
+
+</body>
+<script src="controller.js"></script>
+</html>
